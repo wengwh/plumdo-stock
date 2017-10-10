@@ -2,6 +2,8 @@ package com.plumdo.rest;
 
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -14,13 +16,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.plumdo.exception.ExceptionFactory;
 
 public abstract class AbstractResource {
-
+	protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired
 	protected ExceptionFactory exceptionFactory;
 	@Autowired
 	protected ObjectMapper objectMapper;
 
-	
 	protected Pageable getPageable(Map<String, String> requestParams) {
 		int page = 1;
 		if (requestParams.containsKey("page")) {
@@ -33,20 +34,20 @@ public abstract class AbstractResource {
 		Order order = null;
 		if (requestParams.containsKey("order")) {
 			String orderBy = requestParams.get("order");
-			 if(orderBy.startsWith("-")){
-				 order = new Order(Direction.DESC, orderBy.substring(1));
-			 }else{
-				 order = new Order(Direction.ASC, orderBy);
-			 }
+			if (orderBy.startsWith("-")) {
+				order = new Order(Direction.DESC, orderBy.substring(1));
+			} else {
+				order = new Order(Direction.ASC, orderBy);
+			}
 		}
-		
-		if (order==null) {
+
+		if (order == null) {
 			return new PageRequest(page, size);
 		} else {
 			return new PageRequest(page, size, new Sort(order));
 		}
 	}
-	
+
 	protected <T> PageResponse<T> createPageResponse(Page<T> page) {
 		PageResponse<T> pageResponse = new PageResponse<T>();
 		pageResponse.setData(page.getContent());

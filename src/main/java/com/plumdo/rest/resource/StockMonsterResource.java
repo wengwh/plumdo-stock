@@ -48,6 +48,8 @@ public class StockMonsterResource extends AbstractResource {
 		Criteria<StockMonster> criteria = new Criteria<StockMonster>();
 		criteria.add(Restrictions.like("stockCode", allRequestParams.get("stockCode"), true));
 		criteria.add(Restrictions.like("stockName", allRequestParams.get("stockName"), true));
+		criteria.add(Restrictions.gte("collectTime", allRequestParams.get("collectTimeBegin"), true));
+		criteria.add(Restrictions.lte("collectTime", allRequestParams.get("collectTimeEnd"), true));
 		return createPageResponse(stockMonsterRepository.findAll(criteria, getPageable(allRequestParams)));
 	}
 
@@ -70,6 +72,7 @@ public class StockMonsterResource extends AbstractResource {
 		StockMonster stockMonster = getStockMonsterFromRequest(monsterId);
 		stockMonster.setStockCode(stockMonsterRequest.getStockCode());
 		stockMonster.setStockName(stockMonsterRequest.getStockName());
+		stockMonster.setCollectTime(stockMonsterRequest.getCollectTime());
 		return stockMonsterRepository.save(stockMonster);
 	}
 

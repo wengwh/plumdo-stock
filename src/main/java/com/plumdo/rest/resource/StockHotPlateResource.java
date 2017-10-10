@@ -69,6 +69,8 @@ public class StockHotPlateResource extends AbstractResource {
 	@ResponseStatus(HttpStatus.OK)
 	public StockHotPlate updateStockHotPlate(@PathVariable Integer hotPlateId, @RequestBody StockHotPlate stockHotPlateRequest) {
 		StockHotPlate stockHotPlate = getStockHotPlateFromRequest(hotPlateId);
+		stockHotPlate.setCollectTime(stockHotPlateRequest.getCollectTime());
+		stockHotPlate.setPlateName(stockHotPlateRequest.getPlateName());
 		return stockHotPlateRepository.save(stockHotPlate);
 	}
 

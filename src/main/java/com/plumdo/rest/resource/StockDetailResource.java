@@ -72,6 +72,13 @@ public class StockDetailResource extends AbstractResource {
 		StockDetail stockDetail = getStockDetailFromRequest(detailId);
 		stockDetail.setStockCode(stockDetailRequest.getStockCode());
 		stockDetail.setStockName(stockDetailRequest.getStockName());
+		stockDetail.setStockMoney(stockDetailRequest.getStockMoney());
+		stockDetail.setStockNum(stockDetailRequest.getStockNum());
+		stockDetail.setStockDate(stockDetailRequest.getStockDate());
+		stockDetail.setBeginPrice(stockDetailRequest.getBeginPrice());
+		stockDetail.setEndPrice(stockDetailRequest.getEndPrice());
+		stockDetail.setHighestPrice(stockDetailRequest.getHighestPrice());
+		stockDetail.setLatestPrice(stockDetailRequest.getLatestPrice());
 		return stockDetailRepository.save(stockDetail);
 	}
 

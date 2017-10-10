@@ -3,6 +3,9 @@ package com.plumdo.domain;
 import java.io.Serializable;
 import javax.persistence.*;
 
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+
 
 /**
  * The persistent class for the lottery_detail database table.
@@ -10,7 +13,8 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name="lottery_detail")
-@NamedQuery(name="LotteryDetail.findAll", query="SELECT l FROM LotteryDetail l")
+@DynamicInsert
+@DynamicUpdate
 public class LotteryDetail implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private int detailId;

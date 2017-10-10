@@ -3,6 +3,9 @@ package com.plumdo.domain;
 import java.io.Serializable;
 import javax.persistence.*;
 
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+
 
 /**
  * The persistent class for the stock_info database table.
@@ -10,7 +13,8 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name="stock_info")
-@NamedQuery(name="StockInfo.findAll", query="SELECT s FROM StockInfo s")
+@DynamicInsert
+@DynamicUpdate
 public class StockInfo implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private int stockId;

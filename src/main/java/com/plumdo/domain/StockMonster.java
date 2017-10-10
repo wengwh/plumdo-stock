@@ -2,6 +2,10 @@ package com.plumdo.domain;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+
 import java.sql.Timestamp;
 
 
@@ -11,7 +15,8 @@ import java.sql.Timestamp;
  */
 @Entity
 @Table(name="stock_monster")
-@NamedQuery(name="StockMonster.findAll", query="SELECT s FROM StockMonster s")
+@DynamicInsert
+@DynamicUpdate
 public class StockMonster implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private int monsterId;

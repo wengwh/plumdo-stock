@@ -1,25 +1,25 @@
 package com.plumdo.rest.resource;
 
+import java.util.Date;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.plumdo.domain.StockMonster;
+import com.plumdo.domain.StockGold;
+import com.plumdo.domain.StockInfo;
 import com.plumdo.jpa.Criteria;
 import com.plumdo.jpa.Restrictions;
-import com.plumdo.repository.StockMonsterRepository;
+import com.plumdo.repository.StockGoldRepository;
+import com.plumdo.repository.StockInfoRepository;
 import com.plumdo.rest.AbstractResource;
 import com.plumdo.rest.PageResponse;
+import com.plumdo.utils.DateUtils;
+import com.plumdo.utils.ObjectUtils;
 
 /**
  * 
@@ -32,51 +32,38 @@ import com.plumdo.rest.PageResponse;
 public class StockReportResource extends AbstractResource {
 
 	@Autowired
-	private StockMonsterRepository stockMonsterRepository;
+	private StockGoldRepository stockGoldRepository;
+	@Autowired
+	private StockInfoRepository stockInfoRepository;
 
-	private StockMonster getStockMonsterFromRequest(int id) {
-		StockMonster stockMonster = stockMonsterRepository.findOne(id);
-		if (stockMonster == null) {
-			exceptionFactory.throwObjectNotFound(id);
-		}
-		return stockMonster;
-	}
-
-	@GetMapping("/stock-reports")
+	@GetMapping("/stock-reports/stock-golds")
 	@ResponseStatus(HttpStatus.OK)
-	public PageResponse<StockMonster> getStockMonsters(@RequestParam Map<String, String> allRequestParams) {
-		Criteria<StockMonster> criteria = new Criteria<StockMonster>();
+	public PageResponse<StockGold> getStockGolds(@RequestParam Map<String, String> allRequestParams) {
+		Criteria<StockGold> criteria = new Criteria<StockGold>();
 		criteria.add(Restrictions.like("stockCode", allRequestParams.get("stockCode"), true));
 		criteria.add(Restrictions.like("stockName", allRequestParams.get("stockName"), true));
-		return createPageResponse(stockMonsterRepository.findAll(criteria, getPageable(allRequestParams)));
+		return createPageResponse(stockGoldRepository.findAll(criteria, getPageable(allRequestParams)));
 	}
 
-	@PostMapping("/stock-reports")
-	@ResponseStatus(HttpStatus.CREATED)
-	public StockMonster createStockMonster(@RequestBody StockMonster stockMonsterRequest) {
-		return stockMonsterRepository.save(stockMonsterRequest);
-	}
-
-	@DeleteMapping("/stock-reports/{monsterId}")
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void deleteStockMonster(@PathVariable Integer monsterId) {
-		StockMonster stockMonster = getStockMonsterFromRequest(monsterId);
-		stockMonsterRepository.delete(stockMonster);
-	}
-
-	@PutMapping("/stock-reports/{monsterId}")
+	@GetMapping("/stock-reports/stock-weaks")
 	@ResponseStatus(HttpStatus.OK)
-	public StockMonster updateStockMonster(@PathVariable Integer monsterId, @RequestBody StockMonster stockMonsterRequest) {
-		StockMonster stockMonster = getStockMonsterFromRequest(monsterId);
-		stockMonster.setStockCode(stockMonsterRequest.getStockCode());
-		stockMonster.setStockName(stockMonsterRequest.getStockName());
-		return stockMonsterRepository.save(stockMonster);
-	}
+	public PageResponse<StockInfo> getStockWeaks(@RequestParam Map<String, String> allRequestParams) {
+		Date stockDateBegin = new Date();
+		if (ObjectUtils.isNotEmpty(allRequestParams.get("stockDateBegin"))) {
+			stockDateBegin = DateUtils.parseDateTime(allRequestParams.get("stockDateBegin"));
+		}
 
-	@GetMapping("/stock-reports/{monsterId}")
-	@ResponseStatus(HttpStatus.OK)
-	public StockMonster getStockMonster(@PathVariable Integer monsterId) {
-		return getStockMonsterFromRequest(monsterId);
+		Date stockDateEnd = new Date();
+		if (ObjectUtils.isNotEmpty(allRequestParams.get("stockDateEnd"))) {
+			stockDateEnd = DateUtils.parseDateTime(allRequestParams.get("stockDateEnd"));
+		}
+
+		Double stockRange = 0.0;
+		if (ObjectUtils.isNotEmpty(allRequestParams.get("stockRange"))) {
+			stockRange = ObjectUtils.convertToDouble(allRequestParams.get("stockRange"));
+		}
+
+		return createPageResponse(stockInfoRepository.findWeakStocks(stockDateBegin, stockDateEnd, stockRange, getPageable(allRequestParams)));
 	}
 
 }

@@ -70,6 +70,7 @@ public class StockInfoResource extends AbstractResource {
 		StockInfo stockInfo = getStockInfoFromRequest(stockId);
 		stockInfo.setStockCode(stockInfoRequest.getStockCode());
 		stockInfo.setStockName(stockInfoRequest.getStockName());
+		stockInfo.setStockType(stockInfoRequest.getStockType());
 		return stockInfoRepository.save(stockInfo);
 	}
 
