@@ -9,13 +9,9 @@
 		[ '$scope', '$mdSidenav', '$mdBottomSheet','$window', function($scope, $mdSidenav, $mdBottomSheet,$window) {
 			
 			$scope.menuItems = [ {
-				name : '上传管理',
+				name : '股票信息',
 				icon : 'cloud_upload',
-				sref : 'home.upload.error'
-			}, {
-				name : '下载管理',
-				icon : 'cloud_download',
-				sref : 'home.download.error'
+				sref : 'home.stock-info'
 			} ];
 			
 	    $scope.toggleMenuList = function () {

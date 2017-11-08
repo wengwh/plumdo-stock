@@ -183,16 +183,27 @@ md-input-container {
   padding-bottom: 0px;
   padding-left: 2px;
   padding-right: 2px;
-  margin: 5px 0;
+  margin: 15px 0;
   vertical-align: middle;
   font-size:17px;
 }
 md-input-container:not(.md-input-invalid).md-input-has-value label {
   	color: rgb(231, 87, 83);
 }
-
+md-input-container .md-errors-spacer{
+ min-height: 0px !important;
+}
 .bottom-sheet {
 	position: fixed;	
+}
+.edit-dialog {
+	width: 700px;
+	md-content {
+		min-height: 300px;
+	}
+	.edit-form {
+		width: 600px;
+	}
 }
 .alert-dialog {
 	width: 400px;

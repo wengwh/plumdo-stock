@@ -63,7 +63,25 @@
 		        }
 		    	 });
 		    };
-					
+				
+		    $rootScope.editDialog = function(args) {
+		    	$mdDialog.show({
+		        templateUrl: args.templateUrl,
+		        controller: function($scope, $mdDialog) {
+            	$scope.formTitle = angular.copy(args.formTitle);
+            	$scope.formData = angular.copy(args.formData);
+		          $scope.cancel = function(){
+		            $mdDialog.hide();
+              	args.confirm(false);
+              };
+              $scope.ok = function(){
+		            $mdDialog.hide();
+              	args.confirm(true);
+              };
+		        }
+		    	 });
+		    };
+		    
 		    $rootScope.getDateTime =function(day){
 	        var m = moment();
 		    	if(day){
@@ -75,7 +93,7 @@
 		    
 		    $rootScope.tableOptions = {
 	    		rowSelection: true,
-	        multiSelect: true,
+	        multiSelect: false,
 	        autoSelect: true,
 	        pageSelect: true,
 	        limitOptions:[10,50,100],

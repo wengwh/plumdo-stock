@@ -14,6 +14,7 @@ import org.springframework.data.domain.Sort.Order;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.plumdo.exception.ExceptionFactory;
+import com.plumdo.utils.ObjectUtils;
 
 public abstract class AbstractResource {
 	protected final Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -25,14 +26,14 @@ public abstract class AbstractResource {
 	protected Pageable getPageable(Map<String, String> requestParams) {
 		int page = 1;
 		if (requestParams.containsKey("page")) {
-			page = Integer.parseInt(requestParams.get("page"));
+			page = ObjectUtils.convertToInteger(requestParams.get("page"), 1);
 		}
-		int size = 1;
+		int size = 10;
 		if (requestParams.containsKey("size")) {
-			size = Integer.parseInt(requestParams.get("size"));
+			size = ObjectUtils.convertToInteger(requestParams.get("size"), 10);
 		}
 		Order order = null;
-		if (requestParams.containsKey("order")) {
+		if (ObjectUtils.isNotEmpty(requestParams.get("order"))) {
 			String orderBy = requestParams.get("order");
 			if (orderBy.startsWith("-")) {
 				order = new Order(Direction.DESC, orderBy.substring(1));
@@ -42,21 +43,16 @@ public abstract class AbstractResource {
 		}
 
 		if (order == null) {
-			return new PageRequest(page, size);
+			return new PageRequest(page - 1, size);
 		} else {
-			return new PageRequest(page, size, new Sort(order));
+			return new PageRequest(page - 1, size, new Sort(order));
 		}
 	}
 
 	protected <T> PageResponse<T> createPageResponse(Page<T> page) {
 		PageResponse<T> pageResponse = new PageResponse<T>();
 		pageResponse.setData(page.getContent());
-		pageResponse.setPageTotal(page.getTotalPages());
-		pageResponse.setPageNum(page.getNumber() + 1);
-		pageResponse.setPageSize(page.getSize());
-		pageResponse.setDataTotal(page.getTotalElements());
-		pageResponse.setStartNum(page.getNumber() * page.getSize() + 1);
-		pageResponse.setEndNum(page.isLast() ? page.getTotalElements() : (page.getNumber() + 1) * page.getSize());
+		pageResponse.setTotal(page.getTotalElements());
 		return pageResponse;
 	}
 

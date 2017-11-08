@@ -6,10 +6,10 @@
 	'use strict';
 
 	angular.module('stockApp')
-		.constant('contextRoot', ".")
-//		.constant('contextRoot', "http://127.0.0.1:60919")
+//		.constant('contextRoot', ".")
+		.constant('contextRoot', "http://127.0.0.1:8080")
 		.constant('restUrl', {
-			'userLogin' : '/user/login',
+			'stockInfos' : '/stock-infos',
 			'queryLocalCatenationShop' : '/local/catenation-shop/query',
 			'queryLocalDataType' : '/local/data-type/query',
 			'queryLocalUploadError' : '/local/upload-error/query',

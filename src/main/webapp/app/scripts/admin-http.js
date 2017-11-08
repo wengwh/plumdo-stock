@@ -38,58 +38,59 @@
 		return interceptor;
 	}]);
 	
-	angular.module('stockApp').factory('RestService', ['$http','$q','$window', function($http,$q,$window) {
+	angular.module('stockApp').factory('RestService', ['$http','$q', function($http,$q) {
 		var RestService = function (url,defaultConf) {
 			this.url = url;
 			this.defaultConf = defaultConf;
-		}
+	  }
 	  
 		RestService.prototype = {
-			url:null,
-			defaultConf:null,
-	    http: function (method, conf, callback) {
-	        if(this.defaultConf){
-	        	if(defaultConf.params){
-	             angular.extend(conf.params, defaultConf.params);
-	        	}
-	        	if(defaultConf.data){
-	            angular.extend(conf.data, defaultConf.data);
-	        	}
-	        	if(defaultConf.headers){
-	            angular.extend(conf.headers, defaultConf.headers);
-	        	}
-	        	if(defaultConf.responseType){
+				url:null,
+				defaultConf:null,
+	      http: function (method, conf, callback) {
+	      	if(this.defaultConf){
+          	if(defaultConf.params){
+               angular.extend(conf.params, defaultConf.params);
+          	}
+          	if(defaultConf.data){
+              angular.extend(conf.data, defaultConf.data);
+          	}
+          	if(defaultConf.headers){
+              angular.extend(conf.headers, defaultConf.headers);
+          	}
+          	if(defaultConf.responseType){
 	            angular.extend(conf.responseType, defaultConf.responseType);
 	        	}
-	        }
+          }
 	        var defer = $q.defer();
-	        $http({method: method, url: this.url + (conf.urlPath||''), params: conf.params, data: conf.data, responseType:conf.responseType, headers: conf.headers})
-	        .then(function successCallback(response) {
-      			callback(response);
-        		defer.resolve(response);
-	        }, function errorCallback(response) {
-	        	defer.reject(response);
-	        });
-	        return defer.promise;
-	    },
-	    get: function (conf, callback) {
-	    		return this.http('GET', conf, callback);
-	    },
-	    post: function (conf, callback) {
-	    		return this.http('POST', conf, callback);
-	    },
-	    put : function (conf, callback) {
-	        return this.http('PUT', conf, callback);
-	    },
-	    delete : function (conf, callback) {
-	    	  return this.http('DELETE', conf, callback);
-	    }
+          $http({method: method, url: this.url + (conf.urlPath||''), params: conf.params, data: conf.data, responseType:conf.responseType, headers: conf.headers})
+	          .then(function successCallback(response) {
+	      			callback(response.data);
+	        		defer.resolve(response);
+		        }, function errorCallback(response) {
+		        	defer.reject(response);
+		        });
+	      },
+	      get: function (conf, callback) {
+	        this.http('GET', conf, callback);
+		    },
+		    post : function (conf, callback) {
+		        this.http('POST', conf, callback);
+		    },
+		    put : function (conf, callback) {
+		        this.http('PUT', conf, callback);
+		    },
+		    delete : function (conf, callback) {
+		        this.http('DELETE', conf, callback);
+		    }
 	  };
 		
 		return function(contextRoot,defaultConf){
-			return new RestService(contextRoot,defaultConf);
+			return function (url) {
+		  	return new RestService(contextRoot+url,defaultConf);
+		  }; 
 		}
 	 
-	}])
+	}]);
 
 })();
