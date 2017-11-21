@@ -66,17 +66,18 @@
 				
 		    $rootScope.editDialog = function(args) {
 		    	$mdDialog.show({
-		        templateUrl: args.templateUrl,
+		        templateUrl: 'views/edit-dialog.html',
 		        controller: function($scope, $mdDialog) {
-            	$scope.formTitle = angular.copy(args.formTitle);
-            	$scope.formData = angular.copy(args.formData);
+            	$scope.title = angular.copy(args.title);
+            	$scope.formData = angular.copy(args.formData)||{};
+            	$scope.templateUrl = angular.copy(args.templateUrl);
 		          $scope.cancel = function(){
 		            $mdDialog.hide();
               	args.confirm(false);
               };
               $scope.ok = function(){
 		            $mdDialog.hide();
-              	args.confirm(true);
+              	args.confirm(true,$scope.formData);
               };
 		        }
 		    	 });

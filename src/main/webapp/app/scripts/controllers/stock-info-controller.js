@@ -56,24 +56,22 @@
 			$scope.createItem = function() {
 				$scope.editDialog({
 					templateUrl: 'stock-info-edit.html',
-					title : '采编',
-					confirm : function(isConfirm) {
+					formData: $scope.selected[0],
+					title : '新增',
+					confirm : function(isConfirm, formData) {
+						console.info(formData)
+						if (isConfirm) {
+							$scope.promise = $scope.stockInfos.post({
+								data:formData
+							}, function(response) {
+								$scope.showMsg('添加股票成功');
+								$scope.queryItems(true);
+							});
+						}
 					}
 				})
 			};
 
-			$scope.exportExcel = function() {
-				$scope.promise = $scope.RestService.post({
-					urlPath : $scope.restUrl.exportHeadDownloadError,
-					responseType : 'blob',
-					data : {
-						query : $scope.query,
-						head : $scope.tableCols
-					}
-				}, function(response) {
-					$scope.windowExportExcel(response.data,'下载异常信息');
-				});
-			};
 
 			$scope.queryItems = function(reset) {
 				if(reset && reset==true){

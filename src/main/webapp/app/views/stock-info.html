@@ -9,14 +9,14 @@
         <label>股票编码</label>
         <input ng-model="query.stockName">
       </md-input-container>
-      <md-input-container  layout layout-align="end start">
+      <md-input-container layout layout-align="end start">
         <md-button class="md-raised" ng-click="queryItems(true)">
           <i class="material-icons md-light">search</i>
           <span>查询</span>
         </md-button>
         <md-button class="md-raised" ng-click="createItem()">
-          <i class="material-icons md-light">refresh</i>
-          <span>重置</span>
+          <i class="material-icons md-light">add</i>
+          <span>新增</span>
         </md-button>
       </md-input-container>
     </div>
@@ -27,11 +27,11 @@
       <span ng-show="selected.length">已选中{{selected.length}}行</span>
       <span flex></span>
        <md-button class="md-raised " ng-click="retry()">
-         <i class="material-icons md-light">check</i>
+         <i class="material-icons md-light">edit</i>
          <span>修改</span>
        </md-button>
        <md-button class="md-raised md-warn" ng-click="deleteStockInfo()">
-         <i class="material-icons md-light">check</i>
+         <i class="material-icons md-light">delete</i>
          <span>删除</span>
        </md-button>
     </div>
@@ -57,14 +57,9 @@
 
 
 <script type="text/ng-template" id="stock-info-edit.html">
-<md-dialog aria-label="" class="edit-dialog">
-  <md-content layout="column" layout-align="center center">
-  	<h2>{{formTitle}}</h2>
-  	<md-divider></md-divider>
-	<form name="editForm" layout="column" class="edit-form">
 		<md-input-container flex>
         	<label>板块类别</label>
-			<md-select ng-model="formdata.stockType">
+			<md-select ng-model="formData.stockType">
          	 	<md-option value="sz">深圳</md-option>
           		<md-option value="sh">上海</md-option>
         	</md-select>
@@ -72,21 +67,12 @@
 
     	<md-input-container flex>
         	<label>编码</label>
-        	<input ng-model="formdata.stockCode">
+        	<input ng-model="formData.stockCode">
         </md-input-container>
 
 		<md-input-container flex>
         	<label>名称</label>
-        	<input ng-model="formdata.stockName">
+        	<input ng-model="formData.stockName">
         </md-input-container>
-    </form>
-  </md-content>
-
-  <md-divider></md-divider>
-  <div layout="row" layout-align="center center">
-    <md-button class="md-raised md-warn" ng-click="cancel()">取消</md-button>
-    <md-button class="md-raised md-primary" ng-click="ok()">确认</md-button>
-  </div>
-</md-dialog>
 </script>
   
