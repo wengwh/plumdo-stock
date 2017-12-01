@@ -40,7 +40,7 @@ public class StockDetailCollectResource extends AbstractResource {
 	@Autowired
 	private StockDetailRepository stockDetailRepository;
 	@Autowired
-	private StockInfoRepository  stockInfoRepository;
+	private StockInfoRepository stockInfoRepository;
 	@Autowired
 	private StockGoldRepository stockGoldRepository;
 	@Autowired
@@ -162,7 +162,7 @@ public class StockDetailCollectResource extends AbstractResource {
 				statusList.add(status);
 			}
 			for (int i = statusList.size(); i > 0; i--) {
-				Map<String,String> request = new HashMap<>();
+				Map<String, String> request = new HashMap<>();
 				request.put("access_token", "2.00xgGTSEFWN8wD43a3c832af1bPXLC");
 				request.put("status", statusList.get(i - 1));
 				restTemplate.postForLocation(ConfigConstant.SEND_WEIBO_URL, request);

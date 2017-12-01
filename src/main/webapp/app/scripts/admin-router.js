@@ -13,10 +13,22 @@
 				templateUrl : 'views/main.html',
 				controller : 'MainController',
 				abstract : true
-			}).state('home.stock-info', {
-				url : '/stock-info',
-				controller : 'StockInfoController',
-				templateUrl : 'views/stock-info.html'
+			}).state('home.stock', {
+				url : '/stock',
+				controller : 'StockController',
+				templateUrl : 'views/stock/main-layout.html'
+			}).state('home.stock-hot-plate', {
+				url : '/stock-hot-plate',
+				controller : 'StockHotPlateController',
+				templateUrl : 'views/stock-hot-plate.html'
+			}).state('home.lottery-detail', {
+				url : '/lottery-detail',
+				controller : 'LotteryDetailController',
+				templateUrl : 'views/lottery-detail.html'
+			}).state('home.stock-monster', {
+				url : '/stock-monster',
+				controller : 'StockMonsterController',
+				templateUrl : 'views/stock-monster.html'
 			});
 
 			$urlRouterProvider.otherwise('/stock-info');

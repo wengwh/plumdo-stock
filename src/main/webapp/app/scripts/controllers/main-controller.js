@@ -9,9 +9,17 @@
 		[ '$scope', '$mdSidenav', '$mdBottomSheet','$window', function($scope, $mdSidenav, $mdBottomSheet,$window) {
 			
 			$scope.menuItems = [ {
-				name : '股票信息',
+				name : '股票管理',
 				icon : 'cloud_upload',
-				sref : 'home.stock-info'
+				sref : 'home.stock'
+			},{
+				name : '热门板块',
+				icon : 'cloud_upload',
+				sref : 'home.stock-hot-plate'
+			},{
+				name : '六合彩',
+				icon : 'cloud_upload',
+				sref : 'home.lottery-detail'
 			} ];
 			
 	    $scope.toggleMenuList = function () {
@@ -28,7 +36,7 @@
 	    $scope.showSystemNote = function ($event) {
 	        $mdBottomSheet.show({
 	          parent: angular.element(document.getElementById('content')),
-	          templateUrl: 'views/system-note.html',
+	          templateUrl: 'views/common/system-note.html',
 	          bindToController : true,
 	          targetEvent: $event
 	        }).then(function(clickedItem) {

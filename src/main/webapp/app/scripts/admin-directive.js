@@ -42,6 +42,22 @@
         $compile(element)(scope);
       }
     };
+  }]).directive('mdDatetime', 
+		['$compile', function ($compile) {
+	    return {
+	      restrict: 'A',
+	      link: function (scope, element, attrs) {
+	        element.on('focus', function (event){
+	        	element.children(".text-mode-input").trigger("click")
+	        });
+	        element.removeAttr('md-datetime');
+
+	        element.attr('ng-datetime-picker', '');
+	        element.attr('dt-text', '');
+	        element.attr('dt-type','datetime')
+	        $compile(element)(scope);
+	      }
+	    };
   }]).directive('fixedHeader',
 		['$timeout','$window', function($timeout,$window){
   	return {
@@ -162,7 +178,7 @@
   }]).directive('viewLoad', function() {
 		return {
 			restrict : 'A',
-      templateUrl: 'views/view-load.html',
+      templateUrl: 'views/common/view-load.html',
 			link : function(scope, element) {
 				$(element).fadeIn(300);
 			}

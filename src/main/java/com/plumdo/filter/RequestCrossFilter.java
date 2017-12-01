@@ -1,4 +1,4 @@
-package com.plumdo.config;
+package com.plumdo.filter;
 import java.io.IOException;
 
 import javax.servlet.FilterChain;
@@ -6,11 +6,17 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-@Configuration
-public class CorsFilterConfig extends OncePerRequestFilter {
+/**
+ * 请求跨域过滤器
+ * 
+ * @author wengwenhui
+ *
+ */
+@Component
+public class RequestCrossFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {

@@ -8,7 +8,7 @@ spring:
     sql-script-encoding: UTF-8
   jpa:
     database : MYSQL
-    show-sql : true
+    show-sql : false
     hibernate:  
       ddl-auto : none
       naming: 
@@ -30,8 +30,6 @@ restClient:
 server:
   port: 8080
 logging:
-  level:
-    org.spring.framework: ERROR
-    com.plumdo: INFO
-  file: ./log/app.log
+  config: classpath:logback.xml
+
   

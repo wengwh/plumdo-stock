@@ -20,6 +20,7 @@ import com.plumdo.jpa.Restrictions;
 import com.plumdo.repository.StockHotPlateRepository;
 import com.plumdo.rest.AbstractResource;
 import com.plumdo.rest.PageResponse;
+import com.plumdo.utils.ObjectUtils;
 
 /**
  * 
@@ -47,8 +48,8 @@ public class StockHotPlateResource extends AbstractResource {
 	public PageResponse<StockHotPlate> getStockHotPlates(@RequestParam Map<String, String> allRequestParams) {
 		Criteria<StockHotPlate> criteria = new Criteria<StockHotPlate>();
 		criteria.add(Restrictions.like("plateName", allRequestParams.get("plateName"), true));
-		criteria.add(Restrictions.gte("collectTime", allRequestParams.get("collectTimeBegin"), true));
-		criteria.add(Restrictions.lte("collectTime", allRequestParams.get("collectTimeEnd"), true));
+		criteria.add(Restrictions.gte("collectTime", ObjectUtils.convertToTimestap(allRequestParams.get("collectTimeBegin")), true));
+		criteria.add(Restrictions.lte("collectTime", ObjectUtils.convertToTimestap(allRequestParams.get("collectTimeEnd")), true));
 		return createPageResponse(stockHotPlateRepository.findAll(criteria, getPageable(allRequestParams)));
 	}
 

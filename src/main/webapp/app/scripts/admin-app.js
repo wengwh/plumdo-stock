@@ -48,7 +48,7 @@
 		    
 		    $rootScope.confirmDialog = function(args) {
 		    	$mdDialog.show({
-		        templateUrl: 'views/confirm-dialog.html',
+		        templateUrl: 'views/common/confirm-dialog.html',
 		        controller: function($scope, $mdDialog) {
             	$scope.title = angular.copy(args.title);
             	$scope.content = angular.copy(args.content);
@@ -66,7 +66,7 @@
 				
 		    $rootScope.editDialog = function(args) {
 		    	$mdDialog.show({
-		        templateUrl: 'views/edit-dialog.html',
+		        templateUrl: 'views/common/edit-dialog.html',
 		        controller: function($scope, $mdDialog) {
             	$scope.title = angular.copy(args.title);
             	$scope.formData = angular.copy(args.formData)||{};
@@ -83,7 +83,7 @@
 		    	 });
 		    };
 		    
-		    $rootScope.getDateTime =function(day){
+		    $rootScope.getDateTime = function(day){
 	        var m = moment();
 		    	if(day){
 		        return moment(m).add(day, 'days').format('YYYY-MM-DD HH:mm:ss')

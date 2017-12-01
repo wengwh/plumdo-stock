@@ -1,5 +1,5 @@
 /**
- * 下载异常控制
+ * 股票信息采编
  * 
  * @author wengwh
  */
@@ -10,6 +10,7 @@
 		[ '$scope','$mdDialog',function($scope,$mdDialog) {
 
 			$scope.stockInfos = $scope.RestService($scope.restUrl.stockInfos);
+			$scope.stockMonsters = $scope.RestService($scope.restUrl.stockMonsters);
 			
 			$scope.tableData = [];
 			$scope.totalItems = 0;
@@ -36,17 +37,17 @@
 				page : 1
 			};
 
-			$scope.deleteStockInfo = function() {
+			$scope.deleteItem = function(stockId) {
 				$scope.confirmDialog({
 					title : '确认删除股票',
 					content : '删除选定的股票信息？',
 					confirm : function(isConfirm) {
 						if (isConfirm) {
 							$scope.promise = $scope.stockInfos.delete({
-								urlPath : '/'+$scope.selected[0].stockId,
+								urlPath : '/'+stockId,
 							}, function(response) {
 								$scope.showMsg('删除股票成功');
-								$scope.queryItems(true);
+								$scope.queryItems();
 							});
 						}
 					}
@@ -56,27 +57,44 @@
 			$scope.createItem = function() {
 				$scope.editDialog({
 					templateUrl: 'stock-info-edit.html',
-					formData: $scope.selected[0],
-					title : '新增',
+					formData: {stockType:'sh'},
+					title : '新增股票',
 					confirm : function(isConfirm, formData) {
-						console.info(formData)
 						if (isConfirm) {
 							$scope.promise = $scope.stockInfos.post({
 								data:formData
 							}, function(response) {
-								$scope.showMsg('添加股票成功');
-								$scope.queryItems(true);
+								$scope.showMsg('新增股票成功');
+								$scope.queryItems();
 							});
 						}
 					}
 				})
 			};
+			
+			$scope.updateItem = function(stockId) {
+				$scope.stockInfos.get({urlPath : '/'+stockId}, function(response) {
+					$scope.editDialog({
+						templateUrl: 'stock-info-edit.html',
+						formData: response,
+						title : '编辑股票',
+						confirm : function(isConfirm, formData) {
+							if (isConfirm) {
+								$scope.promise = $scope.stockInfos.put({
+									urlPath : '/'+stockId,
+									data:formData
+								}, function(response) {
+									$scope.showMsg('编辑股票成功');
+									$scope.queryItems();
+								});
+							}
+						}
+					});
+				});
+			};
 
-
-			$scope.queryItems = function(reset) {
-				if(reset && reset==true){
-					$scope.selected = [];
-				}
+			$scope.queryItems = function() {
+				$scope.selected = [];
 				$scope.promise = $scope.stockInfos.get({
 					params:$scope.query
 				}, function(response) {
@@ -86,6 +104,5 @@
 			};
 		
 		} ]);
-	
 
 })();
