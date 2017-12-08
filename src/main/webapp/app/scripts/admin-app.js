@@ -6,7 +6,7 @@
 	'use strict';
 
 	angular.module('stockApp', ['ngAnimate', 'ngCookies',
-	  'ngSanitize', 'ui.router', 'ngMaterial', 'nvd3', 'md.data.table','ngMdIcons','ngDatetimePicker'])
+	  'ngSanitize', 'ui.router', 'ngMaterial', 'nvd3', 'md.data.table','ngDatetimePicker'])
 	  
 	  .run(function($rootScope, $mdToast,$mdDialog, $state, $timeout, RestService, contextRoot, restUrl) {
 	  		$rootScope.contextRoot = contextRoot;

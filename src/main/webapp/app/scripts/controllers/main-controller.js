@@ -10,7 +10,7 @@
 			
 			$scope.menuItems = [ {
 				name : '股票管理',
-				icon : 'cloud_upload',
+				icon : 'icon-home',
 				sref : 'home.stock'
 			},{
 				name : '热门板块',
