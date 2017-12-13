@@ -18,7 +18,7 @@
     "angular-material-data-table": "^0.10.10",
     "material-design-icons": "^3.0.1",
     "angular-material-icons": "^0.7.1",
-    "ng-datetime": "^0.1.3"
+    "material-datetime": "^0.1.5"
   },
   "devDependencies": {},
   "overrides": {
@@ -31,13 +31,6 @@
         "iconfont/MaterialIcons-Regular.ttf",
         "iconfont/MaterialIcons-Regular.woff",
         "iconfont/MaterialIcons-Regular.woff2"
-      ]
-    },
-    "ng-datetime": {
-      "main": [
-        "src/ng-datetime.css",
-        "src/ng-datetime.js",
-        "src/ng-datetime-picker.js"
       ]
     }
   }

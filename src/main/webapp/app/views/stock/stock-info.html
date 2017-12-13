@@ -53,8 +53,7 @@
         	<td md-cell><nobr><span ng-bind="item.stockCode"></span></nobr></td>
         	<td md-cell><nobr><span ng-bind="item.stockName"></span></nobr></td>
         	<td md-cell><nobr><span ng-bind="item.stockType=='sz'?'深圳':'上海'"></span></nobr></td>
-       		<td md-cell>
-       		<nobr><span>
+       		<td md-cell><div class="md-button-group">
 	       		<md-button class="md-raised md-primary" ng-click="updateItem(item.stockId)">
 		         <i class="material-icons md-light">edit</i>
 		         <span>编辑</span>
@@ -66,8 +65,8 @@
 		       	<md-button class="md-raised md-accent" ng-click="updateItem(item.stockId)">
 		         <i class="material-icons md-light">stars</i>
 		         <span>妖股</span>
-		       	</md-button>
-	       	</span></nobr></td>
+		       	</md-button></div>
+	       </td>
         </tr>
         </tbody>
     </table>

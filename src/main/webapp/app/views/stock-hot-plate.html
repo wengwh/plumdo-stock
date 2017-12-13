@@ -7,7 +7,7 @@
       </md-input-container>
 	  <md-input-container flex>
         <label>采集时间</label>
-        <input ng-model="choiceCollectTime" md-datetime-range start-choice="query.collectTimeBegin" end-choice="query.collectTimeEnd" dt-confirm="confirmCollectTime(startChoice, endChoice)">
+        <md-datetime dt-type="datetime-range"  start-choice="query.collectTimeBegin" end-choice="query.collectTimeEnd" dt-q-select="qSelectRange"></md-datetime>
         </input>
       </md-input-container>
       <md-input-container layout layout-align="end start">
@@ -66,7 +66,7 @@
 
 		<md-input-container flex>
         	<label>采集时间</label>
-			<input ng-model="formData.collectTime" md-datetime choice="formData.collectTime">
+			<md-datetime dt-type="datetime"  choice="formData.collectTime"></md-datetime>
         </md-input-container>
 </script>
   

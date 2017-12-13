@@ -7,7 +7,7 @@
 
 	angular.module('stockApp')
 //		.constant('contextRoot', ".")
-		.constant('contextRoot', "http://192.168.82.142:8080")
+		.constant('contextRoot', "http://127.0.0.1:8080")
 		.constant('restUrl', {
 			'stockInfos' : '/stock-infos',
 			'stockHotPlates' : '/stock-hot-plates',

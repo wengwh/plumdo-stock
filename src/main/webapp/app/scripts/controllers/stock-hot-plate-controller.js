@@ -24,11 +24,6 @@
 				orderBy : 'collectTime'
 			} ];
 
-			$scope.confirmCollectTime = function(begin, end) {
-				$scope.query.collectTimeBegin = begin;
-				$scope.query.collectTimeEnd = end;
-				$scope.choiceCollectTime = begin + ' 至 ' + end;
-			};
 			
 			$scope.query = {
 				order : 'collectTime',
@@ -38,8 +33,6 @@
 				limit : 10,
 				page : 1
 			};
-			
-			$scope.confirmCollectTime($scope.query.collectTimeBegin, $scope.query.collectTimeEnd);
 			
 			$scope.deleteItem = function() {
 				$scope.confirmDialog({
@@ -61,7 +54,6 @@
 			$scope.createItem = function() {
 				$scope.editDialog({
 					templateUrl: 'stock-hot-plate-edit.html',
-					formData: {collectTime:$scope.getDateTime()},
 					title : '新增热门板块',
 					confirm : function(isConfirm, formData) {
 						if (isConfirm) {
