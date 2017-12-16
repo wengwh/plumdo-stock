@@ -29,8 +29,8 @@ public abstract class AbstractResource {
 			page = ObjectUtils.convertToInteger(requestParams.get("page"), 1);
 		}
 		int size = 10;
-		if (requestParams.containsKey("size")) {
-			size = ObjectUtils.convertToInteger(requestParams.get("size"), 10);
+		if (requestParams.containsKey("limit")) {
+			size = ObjectUtils.convertToInteger(requestParams.get("limit"), 10);
 		}
 		Order order = null;
 		if (ObjectUtils.isNotEmpty(requestParams.get("order"))) {

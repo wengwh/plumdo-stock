@@ -1,12 +1,14 @@
 package com.plumdo.domain;
 
 import java.io.Serializable;
+import java.util.Date;
+
 import javax.persistence.*;
 
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
-import java.sql.Timestamp;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 
 /**
@@ -20,7 +22,7 @@ import java.sql.Timestamp;
 public class StockMonster implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private int monsterId;
-	private Timestamp collectTime;
+	private Date collectTime;
 	private String stockCode;
 	private String stockName;
 
@@ -41,11 +43,13 @@ public class StockMonster implements Serializable {
 
 
 	@Column(name="collect_time")
-	public Timestamp getCollectTime() {
+	@Temporal(TemporalType.DATE)
+	@JsonFormat(pattern="yyyy-MM-dd",timezone="GMT+8")
+	public Date getCollectTime() {
 		return this.collectTime;
 	}
 
-	public void setCollectTime(Timestamp collectTime) {
+	public void setCollectTime(Date collectTime) {
 		this.collectTime = collectTime;
 	}
 

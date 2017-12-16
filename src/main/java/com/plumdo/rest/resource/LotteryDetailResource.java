@@ -1,5 +1,7 @@
 package com.plumdo.rest.resource;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,9 +73,20 @@ public class LotteryDetailResource extends AbstractResource {
 		lotteryDetailRepository.delete(lotteryDetail);
 	}
 
+	@PostMapping("/lottery-details/batch-delete")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void batchDeleteStockHotPlate(@RequestBody List<Integer> detailIds) {
+		List<LotteryDetail> deleteLotteryDetails = new ArrayList<>();
+		for (Integer detailId : detailIds) {
+			deleteLotteryDetails.add(getLotteryDetailFromRequest(detailId));
+		}
+		lotteryDetailRepository.delete(deleteLotteryDetails);
+	}
+
 	@PutMapping("/lottery-details/{detailId}")
 	@ResponseStatus(HttpStatus.OK)
-	public LotteryDetail updateLotteryDetail(@PathVariable Integer detailId, @RequestBody LotteryDetail lotteryDetailRequest) {
+	public LotteryDetail updateLotteryDetail(@PathVariable Integer detailId,
+			@RequestBody LotteryDetail lotteryDetailRequest) {
 		LotteryDetail lotteryDetail = getLotteryDetailFromRequest(detailId);
 		lotteryDetail.setLotteryCode(lotteryDetailRequest.getLotteryCode());
 		lotteryDetail.setLotteryPeriod(lotteryDetailRequest.getLotteryPeriod());

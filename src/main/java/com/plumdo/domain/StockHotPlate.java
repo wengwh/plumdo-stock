@@ -6,7 +6,9 @@ import javax.persistence.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
-import java.sql.Timestamp;
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import java.util.Date;
 
 
 /**
@@ -20,7 +22,7 @@ import java.sql.Timestamp;
 public class StockHotPlate implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private int hotPlateId;
-	private Timestamp collectTime;
+	private Date collectTime;
 	private String plateName;
 
 	public StockHotPlate() {
@@ -40,11 +42,13 @@ public class StockHotPlate implements Serializable {
 
 
 	@Column(name="collect_time")
-	public Timestamp getCollectTime() {
+	@Temporal(TemporalType.DATE)
+	@JsonFormat(pattern="yyyy-MM-dd",timezone="GMT+8")
+	public Date getCollectTime() {
 		return this.collectTime;
 	}
 
-	public void setCollectTime(Timestamp collectTime) {
+	public void setCollectTime(Date collectTime) {
 		this.collectTime = collectTime;
 	}
 

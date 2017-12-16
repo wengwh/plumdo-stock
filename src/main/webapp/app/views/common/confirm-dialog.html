@@ -1,14 +1,13 @@
 <md-dialog aria-label="" class="alert-dialog">
- <md-content layout="column" layout-align="center center">
-    <i class="material-icons dialog-icon">error_outline</i>
+  <md-content layout="column" layout-align="center center">
+    <i class="material-icons dialog-icon">error</i>
     <h2>{{title}}</h2>
-    <md-divider></md-divider>
-      <h4>{{content}}</h4>
-    </md-content>
+  </md-content>
      
-    <md-divider></md-divider>
-    <div layout="row" layout-align="center center">
-      <md-button class="md-raised md-warn" ng-click="cancel()">取消</md-button>
-      <md-button class="md-raised md-primary" ng-click="ok()">确认</md-button>
-    </div>
+  <md-divider></md-divider>
+    
+  <div layout="row" layout-align="center center">
+    <md-button class="md-raised md-warn" ng-click="cancel()">取消</md-button>
+    <md-button class="md-raised md-primary" ng-click="ok()">确认</md-button>
+  </div>
 </md-dialog>

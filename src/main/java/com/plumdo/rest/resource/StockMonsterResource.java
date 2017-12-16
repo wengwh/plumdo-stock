@@ -20,6 +20,7 @@ import com.plumdo.jpa.Restrictions;
 import com.plumdo.repository.StockMonsterRepository;
 import com.plumdo.rest.AbstractResource;
 import com.plumdo.rest.PageResponse;
+import com.plumdo.utils.ObjectUtils;
 
 /**
  * 
@@ -48,8 +49,8 @@ public class StockMonsterResource extends AbstractResource {
 		Criteria<StockMonster> criteria = new Criteria<StockMonster>();
 		criteria.add(Restrictions.like("stockCode", allRequestParams.get("stockCode"), true));
 		criteria.add(Restrictions.like("stockName", allRequestParams.get("stockName"), true));
-		criteria.add(Restrictions.gte("collectTime", allRequestParams.get("collectTimeBegin"), true));
-		criteria.add(Restrictions.lte("collectTime", allRequestParams.get("collectTimeEnd"), true));
+		criteria.add(Restrictions.gte("collectTime", ObjectUtils.convertToDate(allRequestParams.get("collectTimeBegin")), true));
+		criteria.add(Restrictions.lte("collectTime", ObjectUtils.convertToDate(allRequestParams.get("collectTimeEnd")), true));
 		return createPageResponse(stockMonsterRepository.findAll(criteria, getPageable(allRequestParams)));
 	}
 

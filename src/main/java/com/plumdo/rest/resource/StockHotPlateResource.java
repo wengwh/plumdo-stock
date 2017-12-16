@@ -1,5 +1,7 @@
 package com.plumdo.rest.resource;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,8 +50,8 @@ public class StockHotPlateResource extends AbstractResource {
 	public PageResponse<StockHotPlate> getStockHotPlates(@RequestParam Map<String, String> allRequestParams) {
 		Criteria<StockHotPlate> criteria = new Criteria<StockHotPlate>();
 		criteria.add(Restrictions.like("plateName", allRequestParams.get("plateName"), true));
-		criteria.add(Restrictions.gte("collectTime", ObjectUtils.convertToTimestap(allRequestParams.get("collectTimeBegin")), true));
-		criteria.add(Restrictions.lte("collectTime", ObjectUtils.convertToTimestap(allRequestParams.get("collectTimeEnd")), true));
+		criteria.add(Restrictions.gte("collectTime", ObjectUtils.convertToDate(allRequestParams.get("collectTimeBegin")), true));
+		criteria.add(Restrictions.lte("collectTime", ObjectUtils.convertToDate(allRequestParams.get("collectTimeEnd")), true));
 		return createPageResponse(stockHotPlateRepository.findAll(criteria, getPageable(allRequestParams)));
 	}
 
@@ -64,6 +66,16 @@ public class StockHotPlateResource extends AbstractResource {
 	public void deleteStockHotPlate(@PathVariable Integer hotPlateId) {
 		StockHotPlate stockHotPlate = getStockHotPlateFromRequest(hotPlateId);
 		stockHotPlateRepository.delete(stockHotPlate);
+	}
+	
+	@PostMapping("/stock-hot-plates/batch-delete")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void batchDeleteStockHotPlate(@RequestBody List<Integer> hotPlateIds) {
+		List<StockHotPlate> deleteStockHotPlates = new ArrayList<>();
+		for(Integer hotPlateId : hotPlateIds) {
+			deleteStockHotPlates.add(getStockHotPlateFromRequest(hotPlateId));
+		}
+		stockHotPlateRepository.delete(deleteStockHotPlates);
 	}
 
 	@PutMapping("/stock-hot-plates/{hotPlateId}")

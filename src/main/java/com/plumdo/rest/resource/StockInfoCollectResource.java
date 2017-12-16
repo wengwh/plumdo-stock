@@ -11,8 +11,7 @@ import java.util.concurrent.Executors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
@@ -21,9 +20,11 @@ import com.plumdo.constant.ConfigConstant;
 import com.plumdo.domain.StockDetail;
 import com.plumdo.domain.StockGold;
 import com.plumdo.domain.StockInfo;
+import com.plumdo.domain.SystemParameter;
 import com.plumdo.repository.StockDetailRepository;
 import com.plumdo.repository.StockGoldRepository;
 import com.plumdo.repository.StockInfoRepository;
+import com.plumdo.repository.SystemParameterRepository;
 import com.plumdo.rest.AbstractResource;
 import com.plumdo.utils.DateUtils;
 import com.plumdo.utils.ObjectUtils;
@@ -36,7 +37,7 @@ import com.plumdo.utils.ObjectUtils;
  * 
  */
 @RestController
-public class StockDetailCollectResource extends AbstractResource {
+public class StockInfoCollectResource extends AbstractResource {
 	@Autowired
 	private StockDetailRepository stockDetailRepository;
 	@Autowired
@@ -44,14 +45,16 @@ public class StockDetailCollectResource extends AbstractResource {
 	@Autowired
 	private StockGoldRepository stockGoldRepository;
 	@Autowired
+	private SystemParameterRepository systemParameterRepository;
+	@Autowired
 	private RestTemplate restTemplate;
 
-	@PutMapping("/stock-details/collect")
+	@PostMapping("/stock-infos/collect")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@Transactional
-	public void collectStockDetails(@RequestParam(value = "threadNum") int threadNum) {
+	public void collectStockDetails() throws InterruptedException {
 		List<StockInfo> stockInfos = stockInfoRepository.findAll();
-		ExecutorService fixedThreadPool = Executors.newFixedThreadPool(threadNum);
+		ExecutorService fixedThreadPool = Executors.newFixedThreadPool(ConfigConstant.COLLECT_THREAD_NUM);
 		int loopNum = stockInfos.size() % 10 == 0 ? stockInfos.size() / 10 : stockInfos.size() / 10 + 1;
 		CountDownLatch countDownLatch = new CountDownLatch(loopNum);
 		StringBuffer sbParam = new StringBuffer();
@@ -63,7 +66,8 @@ public class StockDetailCollectResource extends AbstractResource {
 				sbParam.delete(0, sbParam.length());
 			}
 		}
-		fixedThreadPool.execute(new InsertGoldThread(countDownLatch));
+		countDownLatch.await();
+		fixedThreadPool.execute(new InsertGoldThread());
 	}
 
 	class CollectDataThread implements Runnable {
@@ -100,7 +104,7 @@ public class StockDetailCollectResource extends AbstractResource {
 					stockDetail.setLatestPrice(ObjectUtils.convertToBigDecimal(aStock[5]));
 					stockDetail.setStockNum(ObjectUtils.convertToInteger(aStock[8]));
 					stockDetail.setStockMoney(ObjectUtils.convertToBigDecimal(aStock[9]));
-					stockDetail.setStockDate(ObjectUtils.convertToTimestap(aStock[30]));
+					stockDetail.setStockDate(ObjectUtils.convertToDate(aStock[30]));
 					stockDetails.add(stockDetail);
 				}
 			}
@@ -109,15 +113,8 @@ public class StockDetailCollectResource extends AbstractResource {
 	}
 
 	class InsertGoldThread implements Runnable {
-		private CountDownLatch countDownLatch;
-
-		public InsertGoldThread(CountDownLatch countDownLatch) {
-			this.countDownLatch = countDownLatch;
-		}
-
 		public void run() {
 			try {
-				countDownLatch.await();
 				List<StockGold> stockGolds = new ArrayList<StockGold>();
 				List<StockDetail> stockDetails = stockDetailRepository.findStockGolds(DateUtils.getCurrentDay(), DateUtils.getYesterdayOutWeek());
 				StringBuffer weiBoContent = new StringBuffer("今日跳开股票:");
@@ -161,9 +158,10 @@ public class StockDetailCollectResource extends AbstractResource {
 				}
 				statusList.add(status);
 			}
+			SystemParameter systemParameter = systemParameterRepository.findFirstByParameterName("weibo_access_token");
 			for (int i = statusList.size(); i > 0; i--) {
 				Map<String, String> request = new HashMap<>();
-				request.put("access_token", "2.00xgGTSEFWN8wD43a3c832af1bPXLC");
+				request.put("access_token", systemParameter.getParameterValue());
 				request.put("status", statusList.get(i - 1));
 				restTemplate.postForLocation(ConfigConstant.SEND_WEIBO_URL, request);
 				Thread.sleep(5000L);

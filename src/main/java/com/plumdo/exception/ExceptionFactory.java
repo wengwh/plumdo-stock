@@ -55,7 +55,7 @@ public class ExceptionFactory {
 		throw new ResponseException(newTranslateResponse("ARGUMENT_ORDER_INVALID", "ARGUMENT_ORDER_INVALID_INFO",order));
 	}
 
-	public void throwObjectNotFound(int id) {
+	public void throwObjectNotFound(Object id) {
 		throw new ResponseException(newTranslateResponse("OBJECT_NOT_FOUND", "OBJECT_NOT_FOUND_INFO",id));
 	}
 

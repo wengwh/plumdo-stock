@@ -1,5 +1,7 @@
 package com.plumdo.rest.resource;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +50,7 @@ public class StockInfoResource extends AbstractResource {
 		Criteria<StockInfo> criteria = new Criteria<StockInfo>();
 		criteria.add(Restrictions.like("stockCode", allRequestParams.get("stockCode"), true));
 		criteria.add(Restrictions.like("stockName", allRequestParams.get("stockName"), true));
+		criteria.add(Restrictions.like("stockType", allRequestParams.get("stockType"), true));
 		return createPageResponse(stockInfoRepository.findAll(criteria, getPageable(allRequestParams)));
 	}
 
@@ -64,6 +67,16 @@ public class StockInfoResource extends AbstractResource {
 		stockInfoRepository.delete(stockInfo);
 	}
 
+	@PostMapping("/stock-infos/batch-delete")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void batchDeleteStockInfo(@RequestBody List<Integer> stockIds) {
+		List<StockInfo> deleteStockInfos = new ArrayList<>();
+		for (Integer stockId : stockIds) {
+			deleteStockInfos.add(getStockInfoFromRequest(stockId));
+		}
+		stockInfoRepository.delete(deleteStockInfos);
+	}
+	
 	@PutMapping("/stock-infos/{stockId}")
 	@ResponseStatus(HttpStatus.OK)
 	public StockInfo updateStockInfo(@PathVariable Integer stockId, @RequestBody StockInfo stockInfoRequest) {

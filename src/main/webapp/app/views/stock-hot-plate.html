@@ -3,15 +3,14 @@
     <div layout layout-sm="column">
       <md-input-container flex>
         <label>板块名称</label>
-        <input ng-model="query.stockCode">
+        <input ng-model="query.plateName">
       </md-input-container>
 	  <md-input-container flex>
         <label>采集时间</label>
-        <md-datetime dt-type="datetime-range"  start-choice="query.collectTimeBegin" end-choice="query.collectTimeEnd" dt-q-select="qSelectRange"></md-datetime>
-        </input>
+        <md-datetime dt-type="date-range"  start-choice="query.collectTimeBegin" end-choice="query.collectTimeEnd" dt-q-select="qSelectRange"></md-datetime>
       </md-input-container>
       <md-input-container layout layout-align="end start">
-        <md-button class="md-raised " ng-click="queryItems()">
+        <md-button class="md-raised " ng-click="queryItems(true)">
           <i class="material-icons md-light">search</i>
           <span>查询</span>
         </md-button>
@@ -25,32 +24,41 @@
 
   <md-toolbar class="md-table-toolbar alternate" >
     <div class="md-toolbar-tools">
-      <span ng-show="selected.length">已选中{{selected.length}}行</span>
-      <span ng-show="!selected.length">请选中数据再进行操作</span>
+      <span ng-show="selectedItems.length">已选中{{selectedItems.length}}行</span>
+      <span ng-show="!selectedItems.length">请选中数据再进行操作</span>
       <span flex></span>
-       <md-button class="md-raised " ng-click="updateItem()" ng-disabled="!selected.length">
-         <i class="material-icons md-light">edit</i>
-         <span>编辑</span>
-       </md-button>
-       <md-button class="md-raised md-warn" ng-click="deleteItem()" ng-disabled="!selected.length">
+       <md-button class="md-raised md-warn" ng-click="batchDeleteItem()" ng-disabled="!selectedItems.length">
          <i class="material-icons md-light">delete</i>
-         <span>删除</span>
+         <span>批量删除</span>
        </md-button>
     </div>
   </md-toolbar>
 
   <md-table-container>
-    <table md-table fixed-header md-row-select="tableOptions.rowSelection" multiple="{{tableOptions.multiSelect}}" ng-model="selected" class="table table-hover table-bordered" md-progress="promise">
-        <thead md-head md-order="query.order" md-on-reorder="queryItems">
+    <table md-table fixed-header md-row-select="tableOptions.rowSelection" multiple="{{tableOptions.multiSelect}}" ng-model="selectedItems" class="table table-hover table-bordered" md-progress="promise">
+      <thead md-head md-order="query.order" md-on-reorder="queryItems">
         <tr md-row>
-            <th md-column ng-repeat="col in tableCols" md-order-by="{{col.orderBy}}" >{{col.name}}</th>
+          <th md-column ng-repeat="col in tableCols" md-order-by="{{col.orderBy}}" >{{col.name}}</th>
+          <th md-column>操作</th>
         </tr>
-        </thead>
-        <tbody md-body>
+      </thead>
+      <tbody md-body>
         <tr md-row md-select="item" x-md-auto-select="tableOptions.autoSelect" ng-repeat="item in tableData">
-            <td md-cell ng-repeat="col in tableCols"><nobr><span dynamic-bind="col.id" dynamic-bind-pre="item"></span></nobr></td>
+          <td md-cell ng-repeat="col in tableCols"><nobr><span dynamic-bind="col.id" dynamic-bind-pre="item"></span></nobr></td>
+          <td md-cell>
+            <div class="md-button-group">
+              <md-button class="md-raised md-primary" ng-click="updateItem(item.hotPlateId)">
+                <i class="material-icons md-light">edit</i>
+                <span>编辑</span>
+              </md-button>
+              <md-button class="md-raised md-warn" ng-click="deleteItem(item.hotPlateId)">
+                <i class="material-icons md-light">delete</i>
+                <span>删除</span>
+              </md-button>
+              </div>
+          </td>
         </tr>
-        </tbody>
+      </tbody>
     </table>
   </md-table-container>
 
@@ -66,7 +74,7 @@
 
 		<md-input-container flex>
         	<label>采集时间</label>
-			<md-datetime dt-type="datetime"  choice="formData.collectTime"></md-datetime>
+			<md-datetime dt-type="date"  choice="formData.collectTime"></md-datetime>
         </md-input-container>
 </script>
   

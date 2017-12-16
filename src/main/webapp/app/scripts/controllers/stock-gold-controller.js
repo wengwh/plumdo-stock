@@ -6,7 +6,7 @@
 (function () {
   'use strict';
 
-  angular.module('stockApp').controller('StockDetailController', ['$scope', function ($scope) {
+  angular.module('stockApp').controller('StockGoldController', ['$scope', function ($scope) {
 
     $scope.stockReports = $scope.RestService($scope.restUrl.stockReports);
 
@@ -54,13 +54,13 @@
       order: 'stockDate',
       stockDateBegin: $scope.getDate(-7),
       stockDateEnd: $scope.getDate(),
-      limit: 50,
+      limit: 10,
       page: 1
     };
 
     $scope.queryItems = function () {
       $scope.promise = $scope.stockReports.get({
-        urlPath: '/stock-details',
+        urlPath: '/stock-golds',
         params: $scope.query
       }, function (response) {
         $scope.tableData = response.data;

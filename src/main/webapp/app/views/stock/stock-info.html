@@ -1,16 +1,25 @@
 <div class="table-responsive-vertical md-whiteframe-z1" ng-controller="StockInfoController">
   <md-toolbar class="md-table-toolbar md-default md-padding search" >
     <div layout layout-sm="column">
-      <md-input-container flex>
-        <label>股票名称</label>
-        <input ng-model="query.stockCode">
-      </md-input-container>
 	  <md-input-container flex>
         <label>股票编码</label>
+        <input ng-model="query.stockCode">
+      </md-input-container>
+      <md-input-container flex>
+        <label>股票名称</label>
         <input ng-model="query.stockName">
       </md-input-container>
+      <md-input-container flex>
+        <label>板块类别</label> 
+        <md-select ng-model="query.stockType">
+          <md-option value="%">全部</md-option>
+          <md-option value="sz">深圳</md-option>
+          <md-option value="sh">上海</md-option>
+        </md-select>
+      </md-input-container>
+     
       <md-input-container layout layout-align="end start">
-        <md-button class="md-raised " ng-click="queryItems()">
+        <md-button class="md-raised " ng-click="queryItems(true)">
           <i class="material-icons md-light">search</i>
           <span>查询</span>
         </md-button>
@@ -24,14 +33,14 @@
 
   <md-toolbar class="md-table-toolbar alternate" >
     <div class="md-toolbar-tools">
-      <span ng-show="selected.length">已选中{{selected.length}}行</span>
-      <span ng-show="!selected.length">请选中数据</span>
+      <span ng-show="selectedItems.length">已选中{{selectedItems.length}}行</span>
+      <span ng-show="!selectedItems.length">请选中数据</span>
       <span flex></span>
-      <md-button class="md-raised" ng-click="deleteItem()">
+      <md-button class="md-raised" ng-click="collectDetail()">
          <i class="material-icons md-light">cloud_download</i>
          <span>采集详情</span>
        </md-button>
-       <md-button class="md-raised md-warn" ng-click="deleteItem()" ng-disabled="!selected.length">
+       <md-button class="md-raised md-warn" ng-click="batchDeleteItem()" ng-disabled="!selectedItems.length">
          <i class="material-icons md-light">delete</i>
          <span>批量删除</span>
        </md-button>
@@ -39,19 +48,17 @@
   </md-toolbar>
 
   <md-table-container>
-    <table md-table fixed-header md-row-select="tableOptions.rowSelection" multiple="{{tableOptions.multiSelect}}" ng-model="selected" class="table table-hover table-bordered" md-progress="promise">
-        <thead md-head md-order="query.order" md-on-reorder="queryItems">
+    <table md-table  md-row-select="tableOptions.rowSelection" multiple="{{tableOptions.multiSelect}}" ng-model="selectedItems" class="table table-hover table-bordered" md-progress="promise">
+      <thead md-head md-order="query.order" md-on-reorder="queryItems">
         <tr md-row>
-            <th md-column md-order-by="stockCode">股票编码</th>
-            <th md-column md-order-by="stockName">股票名称</th>
-            <th md-column md-order-by="stockType">板块类别</th>
-            <th md-column>操作</th>
+          <th md-column ng-repeat="col in tableCols" md-order-by="{{col.orderBy}}" >{{col.name}}</th>
+          <th md-column md-order-by="stockType">板块类别</th>
+          <th md-column>操作</th>
         </tr>
-        </thead>
+      </thead>
         <tbody md-body>
         <tr md-row md-select="item" x-md-auto-select="tableOptions.autoSelect" ng-repeat="item in tableData">
-        	<td md-cell><nobr><span ng-bind="item.stockCode"></span></nobr></td>
-        	<td md-cell><nobr><span ng-bind="item.stockName"></span></nobr></td>
+            <td md-cell ng-repeat="col in tableCols"><nobr><span dynamic-bind="col.id" dynamic-bind-pre="item"></span></nobr></td>
         	<td md-cell><nobr><span ng-bind="item.stockType=='sz'?'深圳':'上海'"></span></nobr></td>
        		<td md-cell><div class="md-button-group">
 	       		<md-button class="md-raised md-primary" ng-click="updateItem(item.stockId)">
@@ -62,7 +69,7 @@
 		         <i class="material-icons md-light">delete</i>
 		         <span>删除</span>
 		       	</md-button>
-		       	<md-button class="md-raised md-accent" ng-click="updateItem(item.stockId)">
+		       	<md-button class="md-raised md-accent" ng-click="setMonster(item.stockId)">
 		         <i class="material-icons md-light">stars</i>
 		         <span>妖股</span>
 		       	</md-button></div>
@@ -96,4 +103,23 @@
         	<input ng-model="formData.stockName">
         </md-input-container>
 </script>
+
+
+<script type="text/ng-template" id="stock-monster-edit.html">
+      	<md-input-container flex>
+          <label>编码</label>
+          <input ng-model="formData.stockCode" readOnly>
+        </md-input-container>
+
+    	<md-input-container flex>
+          <label>名称</label>
+          <input ng-model="formData.stockName" readOnly>
+        </md-input-container>
+
+    	<md-input-container flex>
+          <label>采集时间</label>
+      	  <md-datetime dt-type="date" choice="formData.collectTime"></md-datetime>
+        </md-input-container>
+</script>
+  
   

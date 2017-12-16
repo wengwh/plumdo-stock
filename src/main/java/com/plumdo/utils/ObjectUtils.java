@@ -3,6 +3,7 @@ package com.plumdo.utils;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -163,6 +164,14 @@ public class ObjectUtils {
 		return convertToBigDecimal(obj, BigDecimal.ZERO);
 	}
 
+	public static Date convertToDate(Object obj, Date defaultVal) {
+		return DateUtils.parseDate(convertToString(obj), defaultVal);
+	}
+
+	public static Date convertToDate(Object obj) {
+		return convertToDate(obj, null);
+	}
+	
 	public static Timestamp convertToTimestap(Object obj, Timestamp defaultVal) {
 		try {
 			return (obj != null) ? Timestamp.valueOf(convertToString(obj)) : defaultVal;
@@ -174,6 +183,8 @@ public class ObjectUtils {
 	public static Timestamp convertToTimestap(Object obj) {
 		return convertToTimestap(obj, null);
 	}
+	
+	
 
 	@SuppressWarnings("rawtypes")
 	public static String listToString(List list, char separator) {

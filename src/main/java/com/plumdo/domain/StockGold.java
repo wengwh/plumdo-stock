@@ -7,7 +7,7 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
+import java.util.Date;
 
 
 /**
@@ -26,7 +26,7 @@ public class StockGold implements Serializable {
 	private BigDecimal highestPrice;
 	private BigDecimal latestPrice;
 	private String stockCode;
-	private Timestamp stockDate;
+	private Date stockDate;
 	private BigDecimal stockMoney;
 	private String stockName;
 	private int stockNum;
@@ -98,11 +98,12 @@ public class StockGold implements Serializable {
 
 
 	@Column(name="stock_date")
-	public Timestamp getStockDate() {
+	@Temporal(TemporalType.DATE)
+	public Date getStockDate() {
 		return this.stockDate;
 	}
 
-	public void setStockDate(Timestamp stockDate) {
+	public void setStockDate(Date stockDate) {
 		this.stockDate = stockDate;
 	}
 
