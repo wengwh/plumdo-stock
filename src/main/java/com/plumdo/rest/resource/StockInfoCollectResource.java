@@ -10,7 +10,6 @@ import java.util.concurrent.Executors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,11 +19,9 @@ import com.plumdo.constant.ConfigConstant;
 import com.plumdo.domain.StockDetail;
 import com.plumdo.domain.StockGold;
 import com.plumdo.domain.StockInfo;
-import com.plumdo.domain.SystemParameter;
 import com.plumdo.repository.StockDetailRepository;
 import com.plumdo.repository.StockGoldRepository;
 import com.plumdo.repository.StockInfoRepository;
-import com.plumdo.repository.SystemParameterRepository;
 import com.plumdo.rest.AbstractResource;
 import com.plumdo.utils.DateUtils;
 import com.plumdo.utils.ObjectUtils;
@@ -45,14 +42,12 @@ public class StockInfoCollectResource extends AbstractResource {
 	@Autowired
 	private StockGoldRepository stockGoldRepository;
 	@Autowired
-	private SystemParameterRepository systemParameterRepository;
-	@Autowired
 	private RestTemplate restTemplate;
 
 	@PostMapping("/stock-infos/collect")
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	@Transactional
-	public void collectStockDetails() throws InterruptedException {
+	@ResponseStatus(HttpStatus.OK)
+	public Map<String,String> collectStockDetails() throws InterruptedException {
+		Map<String,String> result = new HashMap<>();
 		List<StockInfo> stockInfos = stockInfoRepository.findAll();
 		ExecutorService fixedThreadPool = Executors.newFixedThreadPool(ConfigConstant.COLLECT_THREAD_NUM);
 		int loopNum = stockInfos.size() % 10 == 0 ? stockInfos.size() / 10 : stockInfos.size() / 10 + 1;
@@ -67,7 +62,9 @@ public class StockInfoCollectResource extends AbstractResource {
 			}
 		}
 		countDownLatch.await();
-		fixedThreadPool.execute(new InsertGoldThread());
+		String content = saveGoldStock();
+		result.put("content", content);
+		return result;
 	}
 
 	class CollectDataThread implements Runnable {
@@ -112,62 +109,31 @@ public class StockInfoCollectResource extends AbstractResource {
 		}
 	}
 
-	class InsertGoldThread implements Runnable {
-		public void run() {
-			try {
-				List<StockGold> stockGolds = new ArrayList<StockGold>();
-				List<StockDetail> stockDetails = stockDetailRepository.findStockGolds(DateUtils.getCurrentDay(), DateUtils.getYesterdayOutWeek());
-				StringBuffer weiBoContent = new StringBuffer("今日跳开股票:");
-				if (stockDetails != null && stockDetails.size() > 0) {
-					for (StockDetail stockDetail : stockDetails) {
-						StockGold stockGold = new StockGold();
-						stockGold.setStockCode(stockDetail.getStockCode());
-						stockGold.setStockName(stockDetail.getStockName());
-						stockGold.setStockDate(stockDetail.getStockDate());
-						stockGold.setStockMoney(stockDetail.getStockMoney());
-						stockGold.setStockNum(stockDetail.getStockNum());
-						stockGold.setBeginPrice(stockDetail.getBeginPrice());
-						stockGold.setEndPrice(stockDetail.getEndPrice());
-						stockGold.setHighestPrice(stockDetail.getHighestPrice());
-						stockGold.setLatestPrice(stockDetail.getLatestPrice());
-						stockGolds.add(stockGold);
-						weiBoContent.append(stockDetail.getStockCode()).append(":").append(stockDetail.getStockName()).append(",");
-					}
-					stockGoldRepository.save(stockGolds);
-				} else {
-					weiBoContent.append("暂无");
-				}
-
-				sendWeiBo(weiBoContent);
-
-			} catch (InterruptedException e) {
-				logger.error("获取黄金股异常", e);
+	private String saveGoldStock() {
+		List<StockGold> stockGolds = new ArrayList<StockGold>();
+		List<StockDetail> stockDetails = stockDetailRepository.findStockGolds(DateUtils.getCurrentDay(), DateUtils.getYesterdayOutWeek());
+		StringBuffer weiBoContent = new StringBuffer("今日跳开股票:");
+		if (stockDetails != null && stockDetails.size() > 0) {
+			for (StockDetail stockDetail : stockDetails) {
+				StockGold stockGold = new StockGold();
+				stockGold.setStockCode(stockDetail.getStockCode());
+				stockGold.setStockName(stockDetail.getStockName());
+				stockGold.setStockDate(stockDetail.getStockDate());
+				stockGold.setStockMoney(stockDetail.getStockMoney());
+				stockGold.setStockNum(stockDetail.getStockNum());
+				stockGold.setBeginPrice(stockDetail.getBeginPrice());
+				stockGold.setEndPrice(stockDetail.getEndPrice());
+				stockGold.setHighestPrice(stockDetail.getHighestPrice());
+				stockGold.setLatestPrice(stockDetail.getLatestPrice());
+				stockGolds.add(stockGold);
+				weiBoContent.append(stockDetail.getStockCode()).append(":").append(stockDetail.getStockName()).append(",");
 			}
+			stockGoldRepository.save(stockGolds);
+		} else {
+			weiBoContent.append("暂无");
 		}
 
-		private void sendWeiBo(StringBuffer weiBoContent) throws InterruptedException {
-			List<String> statusList = new ArrayList<String>();
-			while (weiBoContent.length() > 0) {
-				String status = "";
-				if (weiBoContent.length() > 120) {
-					status = weiBoContent.substring(0, weiBoContent.indexOf(",", 120));
-					weiBoContent.delete(0, weiBoContent.indexOf(",", 120) + 1);
-				} else {
-					status = weiBoContent.toString();
-					weiBoContent.delete(0, weiBoContent.length());
-				}
-				statusList.add(status);
-			}
-			SystemParameter systemParameter = systemParameterRepository.findFirstByParameterName("weibo_access_token");
-			for (int i = statusList.size(); i > 0; i--) {
-				Map<String, String> request = new HashMap<>();
-				request.put("access_token", systemParameter.getParameterValue());
-				request.put("status", statusList.get(i - 1));
-				restTemplate.postForLocation(ConfigConstant.SEND_WEIBO_URL, request);
-				Thread.sleep(5000L);
-			}
-
-		}
+		return weiBoContent.toString();
 	}
 
 }

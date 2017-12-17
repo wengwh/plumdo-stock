@@ -29,11 +29,13 @@
       </md-button>
     </section>
     <section layout-align="end center">
-      <md-button class="toolbar-button" aria-label="settings" ng-click="setWeiboToken()">
+      <md-button class="toolbar-button md-raised" aria-label="settings" ng-click="setWeiboParams()">
         <i class="material-icons">settings</i>
+        <span>微博配置</span>
       </md-button>
-      <md-button class="toolbar-button" aria-label="Settings" ng-click="toggleRightSidebar()">
-        <i class="material-icons">menu</i>
+      <md-button class="toolbar-button md-raised" aria-label="message" ng-click="sendWeibo()">
+        <i class="material-icons">message</i>
+        <span>发送微博</span>
       </md-button>
     </section>
   </md-toolbar>
@@ -44,9 +46,23 @@
 </div>
 
 
-<script type="text/ng-template" id="weibo-token-edit.html">
+<script type="text/ng-template" id="weibo-params-edit.html">
       <md-input-container flex>
       	<label>微博Token</label>
-        <input ng-model="formData.parameterValue">
+        <input ng-model="formData.accessToken">
       </md-input-container>
+
+      <md-input-container flex>
+      	<label>微博信息共享URL</label>
+        <input ng-model="formData.shareUrl">
+      </md-input-container>
+</script>
+
+
+<script type="text/ng-template" id="weibo-send.html">
+      <md-input-container flex>
+        <label>微博信息</label>
+        <textarea ng-model="formData.content" md-maxlength="120" ng-required="true"></textarea>
+      </md-input-container>
+      
 </script>

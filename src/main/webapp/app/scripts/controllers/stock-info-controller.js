@@ -10,6 +10,7 @@
 
     $scope.stockInfos = $scope.RestService($scope.restUrl.stockInfos);
     $scope.stockMonsters = $scope.RestService($scope.restUrl.stockMonsters);
+    $scope.weibos = $scope.RestService($scope.restUrl.weibos);
 
     $scope.tableData = [];
     $scope.totalItems = 0;
@@ -31,7 +32,7 @@
       page: 1
     };
 
-    $scope.batchDeleteItem = function (hotPlateId) {
+    $scope.batchDeleteItem = function () {
       $scope.confirmDialog({
         title: '确认批量删除选定的股票信息',
         confirm: function (isConfirm) {
@@ -57,8 +58,14 @@
           if (isConfirm) {
             $scope.promise = $scope.stockInfos.post({
               urlPath: '/collect'
-            }, function () {
+            }, function (response) {
               $scope.showMsg('采集股票交易信息成功');
+              $scope.promise = $scope.weibos.post({
+                urlPath: '/send',
+                data: response
+              }, function () {
+                $scope.showMsg('发送微博信息成功');
+              });
             });
           }
         }
@@ -73,13 +80,13 @@
           if (isConfirm) {
             $scope.promise = $scope.stockInfos.delete({
               urlPath: '/' + stockId,
-            }, function (response) {
+            }, function () {
               $scope.showMsg('删除股票成功');
-              $scope.queryItems();
+              $scope.queryItems(true);
             });
           }
         }
-      })
+      });
     };
 
     $scope.createItem = function () {
@@ -97,7 +104,7 @@
             });
           }
         }
-      })
+      });
     };
 
     $scope.updateItem = function (stockId) {
@@ -141,7 +148,7 @@
     };
 
     $scope.queryItems = function (isReset) {
-      if (isReset == true) {
+      if (isReset === true) {
         $scope.selectedItems = [];
       }
       $scope.promise = $scope.stockInfos.get({

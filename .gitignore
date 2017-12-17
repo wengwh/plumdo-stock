@@ -24,7 +24,7 @@ hs_err_pid*
 /log/
 
 
-
+/src/main/resources/static
 /node_modules
 /dist
 /.tmp

@@ -42,24 +42,24 @@
     var RestService = function (url, defaultConf) {
       this.url = url;
       this.defaultConf = defaultConf;
-    }
+    };
 
     RestService.prototype = {
       url: null,
       defaultConf: null,
       http: function (method, conf, callback) {
         if (this.defaultConf) {
-          if (defaultConf.params) {
-            angular.extend(conf.params, defaultConf.params);
+          if (this.defaultConf.params) {
+            angular.extend(conf.params, this.defaultConf.params);
           }
-          if (defaultConf.data) {
-            angular.extend(conf.data, defaultConf.data);
+          if (this.defaultConf.data) {
+            angular.extend(conf.data, this.defaultConf.data);
           }
-          if (defaultConf.headers) {
-            angular.extend(conf.headers, defaultConf.headers);
+          if (this.defaultConf.headers) {
+            angular.extend(conf.headers, this.defaultConf.headers);
           }
-          if (defaultConf.responseType) {
-            angular.extend(conf.responseType, defaultConf.responseType);
+          if (this.defaultConf.responseType) {
+            angular.extend(conf.responseType, this.defaultConf.responseType);
           }
         }
         var defer = $q.defer();
@@ -95,7 +95,7 @@
       return function (url) {
         return new RestService(contextRoot + url, defaultConf);
       };
-    }
+    };
 
   }]);
 

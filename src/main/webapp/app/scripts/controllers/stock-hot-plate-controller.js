@@ -28,12 +28,12 @@
     $scope.query = {
       order: 'collectTime',
       collectTimeBegin: $scope.getDate(-7),
-      collectTimeEnd: $scope.getDate(7),
+      collectTimeEnd: $scope.getDate(),
       limit: 10,
       page: 1
     };
 
-    $scope.batchDeleteItem = function (hotPlateId) {
+    $scope.batchDeleteItem = function () {
       $scope.confirmDialog({
         title: '确认批量删除选定的热门板块',
         confirm: function (isConfirm) {
@@ -82,7 +82,7 @@
             });
           }
         }
-      })
+      });
     };
 
     $scope.updateItem = function (hotPlateId) {
@@ -107,7 +107,7 @@
     };
 
     $scope.queryItems = function (isReset) {
-      if (isReset == true) {
+      if (isReset === true) {
         $scope.selectedItems = [];
       }
       $scope.promise = $scope.stockHotPlates.get({

@@ -9,7 +9,7 @@
   angular.module('stockApp').directive('fixedHeader', ['$timeout', '$window', function ($timeout, $window) {
     return {
       restrict: 'A',
-      link: function ($scope, $elem, $attrs, $ctrl) {
+      link: function ($scope, $elem, $attrs) {
         var headerHeight = $attrs.fixedHeader || 430;
         // github的固定表头，在多列情况不对齐，直接修改代码，不使用bower引入
         var elem = $elem[0];
@@ -21,12 +21,6 @@
           var firstCell = elem.querySelector('tbody tr:first-child td:first-child');
           return firstCell && !firstCell.style.minWidth;
         }
-        // wait for data to load and then transform the table
-        $scope.$watch(tableDataLoaded, function (isTableDataLoaded) {
-          if (isTableDataLoaded) {
-            transformTable();
-          }
-        });
 
         function transformTable() {
           // reset display styles so column widths are correct when measured
@@ -43,9 +37,9 @@
               var tfElems = elem.querySelector('tfoot tr:first-child td:nth-child(' + (i + 1) + ')');
 
               var columnWidth = tdElems ? tdElems.offsetWidth : thElem.offsetWidth;
-              if (i == 0 || i == thElems.length - 2) {
+              if (i === 0 || i === thElems.length - 2) {
                 columnWidth = columnWidth - 25;
-              } else if (i == 1) {
+              } else if (i === 1) {
                 columnWidth = columnWidth - 48;
               } else if (i < thElems.length - 2) {
                 columnWidth = columnWidth - 56;
@@ -90,6 +84,13 @@
             }
           });
         }
+        // wait for data to load and then transform the table
+        $scope.$watch(tableDataLoaded, function (isTableDataLoaded) {
+          if (isTableDataLoaded) {
+            transformTable();
+          }
+        });
+        
       }
     };
   }]).directive('dynamicBind', ['$compile', function ($compile) {

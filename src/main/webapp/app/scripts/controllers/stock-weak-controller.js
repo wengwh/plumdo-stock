@@ -24,8 +24,9 @@
 
     $scope.query = {
       order: 'stockCode',
+      stockRange: '0.01',
       stockDateBegin: $scope.getDate(-7),
-      stockDateEnd: $scope.getDate(7),
+      stockDateEnd: $scope.getDate(),
       limit: 10,
       page: 1
     };

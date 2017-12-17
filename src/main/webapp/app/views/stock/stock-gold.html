@@ -25,16 +25,16 @@
 
   <md-table-container>
     <table md-table class="table table-hover table-bordered" md-progress="promise">
-        <thead md-head md-order="query.order" md-on-reorder="queryItems" >
+      <thead md-head md-order="query.order" md-on-reorder="queryItems" >
         <tr md-row>
-            <th md-column ng-repeat="col in tableCols" md-order-by="{{col.orderBy}}" >{{col.name}}</th>
+            <th md-column ng-repeat="col in tableCols" md-order-by="{{col.orderBy}}">{{col.name}}</th>
         </tr>
-        </thead>
-        <tbody md-body>
+      </thead>
+      <tbody md-body>
         <tr md-row md-select="item" ng-repeat="item in tableData">
             <td md-cell ng-repeat="col in tableCols"><nobr><span dynamic-bind="col.id" dynamic-bind-pre="item"></span></nobr></td>
         </tr>
-        </tbody>
+      </tbody>
     </table>
   </md-table-container>
 

@@ -21,7 +21,7 @@
     }, {
       label: '弱势股',
       templateUrl: 'views/stock/stock-weak.html'
-    }]
+    }];
 
   }]);
 

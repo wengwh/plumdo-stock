@@ -49,7 +49,7 @@
             });
           }
         }
-      })
+      });
     };
 
     $scope.queryItems = function () {

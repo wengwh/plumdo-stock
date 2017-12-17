@@ -57,7 +57,7 @@
       page: 1
     };
 
-    $scope.batchDeleteItem = function (hotPlateId) {
+    $scope.batchDeleteItem = function () {
       $scope.confirmDialog({
         title: '确认批量删除选定的六合彩',
         confirm: function (isConfirm) {
@@ -89,7 +89,7 @@
             });
           }
         }
-      })
+      });
     };
 
     $scope.createItem = function () {
@@ -106,7 +106,7 @@
             });
           }
         }
-      })
+      });
     };
 
     $scope.updateItem = function (detailId) {
@@ -131,7 +131,7 @@
     };
 
     $scope.queryItems = function (isReset) {
-      if (isReset == true) {
+      if (isReset === true) {
         $scope.selectedItems = [];
       }
       $scope.promise = $scope.lotteryDetails.get({
