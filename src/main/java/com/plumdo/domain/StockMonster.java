@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
  * 
  */
 @Entity
-@Table(name="stock_monster")
+@Table(name="stock_monster", catalog="plumdo_stock")
 @DynamicInsert
 @DynamicUpdate
 public class StockMonster implements Serializable {

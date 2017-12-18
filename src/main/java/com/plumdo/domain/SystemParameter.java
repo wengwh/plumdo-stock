@@ -12,7 +12,7 @@ import org.hibernate.annotations.DynamicUpdate;
  * 
  */
 @Entity
-@Table(name="system_parameter")
+@Table(name="system_parameter", catalog="plumdo_stock")
 @DynamicInsert
 @DynamicUpdate
 public class SystemParameter implements Serializable {

@@ -15,7 +15,7 @@ import java.util.Date;
  * 
  */
 @Entity
-@Table(name="stock_gold")
+@Table(name="stock_gold", catalog="plumdo_stock")
 @DynamicInsert
 @DynamicUpdate
 public class StockGold implements Serializable {

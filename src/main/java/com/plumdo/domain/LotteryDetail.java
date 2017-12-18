@@ -12,7 +12,7 @@ import org.hibernate.annotations.DynamicUpdate;
  * 
  */
 @Entity
-@Table(name="lottery_detail")
+@Table(name="lottery_detail", catalog="plumdo_stock")
 @DynamicInsert
 @DynamicUpdate
 public class LotteryDetail implements Serializable {

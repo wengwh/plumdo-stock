@@ -1,3 +1,6 @@
+CREATE DATABASE IF NOT EXISTS plumdo_stock DEFAULT CHARSET utf8 COLLATE utf8_general_ci;
+USE plumdo_stock;
+
 SET FOREIGN_KEY_CHECKS=0;
 
 DROP TABLE IF EXISTS `stock_detail`;
