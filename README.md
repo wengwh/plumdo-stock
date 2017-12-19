@@ -47,4 +47,5 @@ UI：Angular Material
 框架：SpringBoot
 数据库：Mysql
 ```
-<img src="https://wengwh.github.io/plumdo-stock/demo.png" alt="image" data-canonical-src="" style="max-width:100%;">
+
+![Aaron Swartz](https://raw.githubusercontent.com/wengwh/plumdo-stock/master/docs/demo.png)
