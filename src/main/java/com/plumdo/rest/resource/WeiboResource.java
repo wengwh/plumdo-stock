@@ -96,7 +96,9 @@ public class WeiboResource extends AbstractResource {
 			dataMap.add("status", statusList.get(i - 1) + weiboShareUrl.getParameterValue());
 			HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<MultiValueMap<String, String>>(dataMap, headers);
 			restTemplate.postForEntity(ConfigConstant.SEND_WEIBO_URL, request, Map.class);
-			Thread.sleep(5000L);
+			if (i > 1) {
+				Thread.sleep(5000L);
+			}
 		}
 	}
 
