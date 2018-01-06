@@ -50,7 +50,23 @@
         }
       });
     };
-
+    
+    $scope.syncStock = function () {
+      $scope.confirmDialog({
+        title: '确认同步股票信息',
+        confirm: function (isConfirm) {
+          if (isConfirm) {
+            $scope.promise = $scope.stockInfos.post({
+              urlPath: '/sync'
+            }, function (response) {
+              $scope.showMsg('同步股票信息成功');
+              $scope.queryItems(true);
+            });
+          }
+        }
+      });
+    };
+    
     $scope.collectDetail = function () {
       $scope.confirmDialog({
         title: '确认采集股票最近一天的交易信息',

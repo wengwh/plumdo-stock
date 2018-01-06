@@ -18,7 +18,7 @@
     "angular-material-data-table": "^0.10.10",
     "material-design-icons": "^3.0.1",
     "angular-material-icons": "^0.7.1",
-    "material-datetime": "^0.1.5"
+    "material-datetime": "^0.1.7"
   },
   "devDependencies": {},
   "overrides": {

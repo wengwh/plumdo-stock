@@ -19,5 +19,7 @@ public interface StockInfoRepository extends BaseRepository<StockInfo, Integer> 
 			+ " ((d2.endPrice-d2.beginPrice)/d2.beginPrice) >?3 "
 			+ " and d2.stockDate>=?1 and d2.stockDate<=?2)")
 	Page<StockInfo> findWeakStocks(Date stockDateBegin,Date stockDateEnd,BigDecimal stockRange,Pageable pageable);
+	
+	StockInfo findFirstByStockCode(String stockCode);
 
 }

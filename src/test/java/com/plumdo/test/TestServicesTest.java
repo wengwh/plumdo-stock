@@ -27,7 +27,7 @@ public class TestServicesTest {
 	RestTemplate restTemplate;
 
 	@Test
-	public void testShow() {
+	public void testShow2() {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
@@ -38,6 +38,12 @@ public class TestServicesTest {
 		HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<MultiValueMap<String, String>>(map, headers);
 
 		restTemplate.postForEntity(ConfigConstant.SEND_WEIBO_URL, request, Map.class);
+	}
+	
+	@Test
+	public void testShow() {
+		String conetent = restTemplate.getForObject("http://quote.eastmoney.com/stocklist.html", String.class);
+		System.out.println(conetent);
 	}
 
 }

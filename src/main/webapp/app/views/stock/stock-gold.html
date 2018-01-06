@@ -2,16 +2,16 @@
   <md-toolbar class="md-table-toolbar md-default md-padding search" >
     <div layout layout-sm="column">
       <md-input-container flex>
-        <label>股票名称</label>
+        <label>股票编码</label>
         <input ng-model="query.stockCode">
       </md-input-container>
 	  <md-input-container flex>
-        <label>股票编码</label>
+        <label>股票名称</label>
         <input ng-model="query.stockName">
       </md-input-container>
       <md-input-container flex>
         <label>交易时间</label>
-        <md-datetime dt-type="date-range"  start-choice="query.stockDateBegin" end-choice="query.stockDateEnd" dt-q-select="qSelectRange"></md-datetime>
+        <md-datetime dt-type="date-range" start-choice="query.stockDateBegin" end-choice="query.stockDateEnd" dt-q-select="qSelectRange"></md-datetime>
       </md-input-container>
       <md-input-container layout layout-align="end start">
         <md-button class="md-raised " ng-click="queryItems()">

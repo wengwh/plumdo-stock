@@ -27,8 +27,8 @@
 
     $scope.query = {
       order: 'collectTime',
-      collectTimeBegin: $scope.getDate(-7),
-      collectTimeEnd: $scope.getDate(),
+      collectTimeBegin: null,
+      collectTimeEnd: null,
       limit: 10,
       page: 1
     };

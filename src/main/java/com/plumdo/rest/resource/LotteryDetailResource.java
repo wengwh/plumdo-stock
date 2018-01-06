@@ -56,7 +56,7 @@ public class LotteryDetailResource extends AbstractResource {
 		criteria.add(Restrictions.eq("lotteryN4", allRequestParams.get("lotteryN4"), true));
 		criteria.add(Restrictions.eq("lotteryN5", allRequestParams.get("lotteryN5"), true));
 		criteria.add(Restrictions.eq("lotteryN6", allRequestParams.get("lotteryN6"), true));
-		criteria.add(Restrictions.like("lotteryCode", allRequestParams.get("lotteryCode"), true));
+		criteria.add(Restrictions.eq("lotteryCode", allRequestParams.get("lotteryCode"), true));
 		return createPageResponse(lotteryDetailRepository.findAll(criteria, getPageable(allRequestParams)));
 	}
 

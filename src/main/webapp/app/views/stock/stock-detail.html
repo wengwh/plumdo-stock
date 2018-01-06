@@ -1,12 +1,12 @@
 <div class="table-responsive-vertical md-whiteframe-z1" ng-controller="StockDetailController">
   <md-toolbar class="md-table-toolbar md-default md-padding search" >
     <div layout layout-sm="column">
-      <md-input-container flex>
-        <label>股票名称</label>
-        <input ng-model="query.stockCode">
-      </md-input-container>
 	  <md-input-container flex>
         <label>股票编码</label>
+        <input ng-model="query.stockCode">
+      </md-input-container>
+      <md-input-container flex>
+        <label>股票名称</label>
         <input ng-model="query.stockName">
       </md-input-container>
       <md-input-container flex>

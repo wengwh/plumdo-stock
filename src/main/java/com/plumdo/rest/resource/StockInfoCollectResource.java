@@ -111,6 +111,7 @@ public class StockInfoCollectResource extends AbstractResource {
 
 	private String saveGoldStock() {
 		List<StockGold> stockGolds = new ArrayList<StockGold>();
+		stockGoldRepository.deleteStockGolds(DateUtils.getCurrentDay());
 		List<StockDetail> stockDetails = stockDetailRepository.findStockGolds(DateUtils.getCurrentDay(), DateUtils.getYesterdayOutWeek());
 		StringBuffer weiBoContent = new StringBuffer("今日跳开股票:");
 		if (stockDetails != null && stockDetails.size() > 0) {

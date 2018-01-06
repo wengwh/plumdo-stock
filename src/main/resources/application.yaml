@@ -1,5 +1,5 @@
 spring:
-  profiles.active: pro
+  profiles.active: dev
   datasource:
     url : jdbc:mysql://localhost:3306?useUnicode=true&characterEncoding=UTF-8
     username : root

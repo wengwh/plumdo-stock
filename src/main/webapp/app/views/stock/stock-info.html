@@ -36,19 +36,23 @@
       <span ng-show="selectedItems.length">已选中{{selectedItems.length}}行</span>
       <span ng-show="!selectedItems.length">请选中数据再进行操作</span>
       <span flex></span>
+      <md-button class="md-raised" ng-click="syncStock()">
+         <i class="material-icons md-light">cached</i>
+         <span>同步股票</span>
+      </md-button>
       <md-button class="md-raised" ng-click="collectDetail()">
          <i class="material-icons md-light">cloud_download</i>
-         <span>采集详情</span>
-       </md-button>
-       <md-button class="md-raised md-warn" ng-click="batchDeleteItem()" ng-disabled="!selectedItems.length">
+         <span>采集交易</span>
+      </md-button>
+      <md-button class="md-raised md-warn" ng-click="batchDeleteItem()" ng-disabled="!selectedItems.length">
          <i class="material-icons md-light">delete</i>
          <span>批量删除</span>
-       </md-button>
+      </md-button>
     </div>
   </md-toolbar>
 
   <md-table-container>
-    <table md-table  md-row-select="tableOptions.rowSelection" multiple="{{tableOptions.multiSelect}}" ng-model="selectedItems" class="table table-hover table-bordered" md-progress="promise">
+    <table md-table md-row-select="tableOptions.rowSelection" multiple="{{tableOptions.multiSelect}}" ng-model="selectedItems" class="table table-hover table-bordered" md-progress="promise">
       <thead md-head md-order="query.order" md-on-reorder="queryItems">
         <tr md-row>
           <th md-column ng-repeat="col in tableCols" md-order-by="{{col.orderBy}}">{{col.name}}</th>

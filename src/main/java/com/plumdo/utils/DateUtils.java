@@ -187,6 +187,12 @@ public class DateUtils {
 		return calendar.getTime();
 	}
 
+	public static int getYear(Date date) {
+		Calendar now = Calendar.getInstance();
+		now.setTime(date);
+		return now.get(Calendar.YEAR);
+	}
+	
 	public static Date getYesterdayOutWeek() {
 		if (Calendar.getInstance().get(Calendar.DAY_OF_WEEK) != 2) {
 			return newDateByDay(getCurrentDay(), -1);

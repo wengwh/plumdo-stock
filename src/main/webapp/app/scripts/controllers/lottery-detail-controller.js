@@ -52,9 +52,26 @@
     }];
 
     $scope.query = {
-      order: 'lotteryYear',
+      order: '-lotteryYear',
       limit: 10,
       page: 1
+    };
+    
+    
+    $scope.collectData = function () {
+      $scope.confirmDialog({
+        title: '确认采集六合彩信息',
+        confirm: function (isConfirm) {
+          if (isConfirm) {
+            $scope.promise = $scope.lotteryDetails.post({
+              urlPath: '/sync'
+            }, function (response) {
+              $scope.showMsg('采集六合彩信息成功');
+              $scope.queryItems(true);
+            });
+          }
+        }
+      });
     };
 
     $scope.batchDeleteItem = function () {
